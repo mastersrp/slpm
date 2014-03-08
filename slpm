@@ -53,8 +53,8 @@ PKGDIR="${ROOT}/pkg"
 PTXDIR="${ROOT}/patches"
 RMVDIR="${ROOT}/_removed"
 BINPKGDIR="${ROOT}/binpkg"
-SYNC_TYPE="fossil"
-SYNC_URL="https://chiselapp.com/user/mastersrp/repository/slpm-default"
+SYNC_TYPE="git"
+SYNC_URL="https://github.com/mastersrp/slpm-default"
 MAKE=make
 mkdir -p "${TMPDIR}"
 export TMPDIR
@@ -536,6 +536,14 @@ remove_install() {
 remove_empty() {
   # find empty directories and kill them all
   find ${PREFIX} -type d -empty -exec rmdir {} \;
+}
+
+sync_git_repo() {
+	if [[ -d ".git/" ]]; then
+		git pull
+	else
+		( git clone $SYNC_URL $PKGDIR && git checkout master )
+	fi
 }
 
 sync_fossil_repo() {

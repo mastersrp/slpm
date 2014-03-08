@@ -1,9 +1,0 @@
-URL=http://www.nasm.us/pub/nasm/releasebuilds/2.10rc3/nasm-2.10rc3.tar.bz2
-DESC="The Netwide Assembler"
-
-# XXX nasm does not honors DESTDIR
-PKGINSTALL=_pkginstall
-_pkginstall() {
-	eval $@
-	${MAKE} install prefix=${DESTDIR}/${PREFIX} PREFIX=${DESTDIR}/${PREFIX}
-}

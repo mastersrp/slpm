@@ -1,4 +1,0 @@
-URL=http://hg.youterm.com/doblog
-TYPE=hg
-DESC="commandline blog and administration tool"
-MSG="Install target is broken. Not honoring DESTDIR"

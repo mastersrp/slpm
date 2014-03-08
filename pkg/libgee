@@ -1,3 +1,0 @@
-URL=git://gitorious.org/libgee/libgee.git
-TYPE=git
-PKGCONFIGURE="sh autogen.sh --prefix=${PREFIX}"

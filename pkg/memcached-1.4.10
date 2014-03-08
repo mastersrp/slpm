@@ -1,4 +1,0 @@
-URL=http://memcached.googlecode.com/files/memcached-1.4.10.tar.gz
-TYPE=tar
-DESC="memcached"
-DEPS=libevent

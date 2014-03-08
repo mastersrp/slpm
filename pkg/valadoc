@@ -1,4 +1,0 @@
-URL=git://git.gnome.org/valadoc
-DESC="Vala documentation tool"
-TYPE=git
-PKGCONFIGURE="sh autogen.sh --prefix=${PREFIX}"

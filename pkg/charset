@@ -1,4 +1,0 @@
-URL=svn://svn.tartarus.org/sgt/charset
-TYPE=svn
-DESC="charset library for halibut"
-PKGINSTALL="echo no install ; #"

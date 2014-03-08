@@ -1,3 +1,0 @@
-URL=git://github.com/joyent/libuv.git
-TYPE=git
-DESC="asynchrunous library from nodejs"

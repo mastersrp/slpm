@@ -1,3 +1,0 @@
-URL=http://hg.youterm.com/mksend
-TYPE=hg
-DESC="construct and send network packets"
