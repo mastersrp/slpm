@@ -47,15 +47,19 @@ IGNEXE=0
 PYTHON=python
 USRDIR="${HOME}/.slpm"
 WRKDIR="${ROOT}/_work"
-TMPDIR="${ROOT}/_work/tmp"
+#TMPDIR="${ROOT}/_work/tmp"
+TMPDIR="${WRKDIR}/tmp"
 PKGDIR="${ROOT}/pkg"
 PTXDIR="${ROOT}/patches"
 RMVDIR="${ROOT}/_removed"
 BINPKGDIR="${ROOT}/binpkg"
+SYNC_TYPE="fossil"
+SYNC_URL="https://chiselapp.com/user/mastersrp/repository/slpm-default"
 MAKE=make
 mkdir -p "${TMPDIR}"
 export TMPDIR
 . "${ROOT}/config"
+. ./config
 echo | md5sum >/dev/null 2>&1
 if [ $? = 0 ]; then
 	CHKSUM=md5sum
@@ -123,6 +127,20 @@ git_fetch() {
   else
     git clone ${GITARGS} "$2" "$1"
   fi
+}
+
+fossil_fetch() {
+	cd "$WRKDIR"
+	if [ -d "$1" ]; then
+		if [ "$3" = 1 ]; then
+			( cd "$1" ; fossil update )
+		fi
+	else
+		mkdir $1
+		fossil clone "$2" $1/repo.fossil
+		cd $1
+		fossil open --nested repo.fossil
+	fi
 }
 
 tar_fetch() {
@@ -427,6 +445,7 @@ Usage: slpm [-iudlLx] [pkg pkg ..]
  -C : check checksum of pkg files (u=unmodified, m=modified)
  -r : remove devel/man/doc files to _remove/
       -r: list, -ri: reinstall, -rm: remove
+ -S : syncronize package repository
  -s : search package by keyword
  -l : list installed packages or pkg files
  -L : list all available packages (-LL for description)
@@ -519,6 +538,21 @@ remove_empty() {
   find ${PREFIX} -type d -empty -exec rmdir {} \;
 }
 
+sync_fossil_repo() {
+	if [[ -f ".repo.fossil" ]]; then
+		fossil update;
+	else
+		( fossil clone $SYNC_URL .repo.fossil && fossil open --nested .repo.fossil )
+	fi
+}
+
+sync_repo() {
+	here=`pwd -P`
+	cd $PKGDIR
+	eval sync_${SYNC_TYPE}_repo
+	cd $here
+}
+
 DO=
 while [ -n "$1" ]; do
   case "$1" in
@@ -526,6 +560,7 @@ while [ -n "$1" ]; do
   -re) remove_empty ; exit 0 ; ;;
   -rm) remove_move "$@" ; exit 0 ; ;;
   -ri) remove_install "$2" ; exit 0 ; ;;
+	-S) sync_repo ; exit 0 ; ;;
   -f) fixlibs ; exit 0 ; ;;
   -fi)
     mkdir -p ${DESTDIR}/${PREFIX}/lib
