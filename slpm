@@ -556,6 +556,7 @@ sync_fossil_repo() {
 
 sync_repo() {
 	here=`pwd -P`
+	mkdir -p $PKGDIR
 	cd $PKGDIR
 	eval sync_${SYNC_TYPE}_repo
 	cd $here
